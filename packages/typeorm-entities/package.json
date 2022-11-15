@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "typeorm-entities",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "typeorm": "^0.3.10"
+  },
+  "peerDependencies": {
+    "typeorm": "^0.3.10"
+  }
+}
