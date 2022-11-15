@@ -18,10 +18,20 @@
   },
   "targetDefaults": {
     "build": {
-      "inputs": ["noMarkdown", "^noMarkdown", "noTestFiles", "^noTestFiles"],
+      "inputs": [
+        "noMarkdown",
+        "^noMarkdown",
+        "noTestFiles",
+        "^noTestFiles",
+        "{projectRoot}/**/*ts",
+        "{projectRoot}/**/*tsx"
+      ],
       "dependsOn": ["^build"]
     },
     "dev": {
+      "dependsOn": ["^build"]
+    },
+    "start": {
       "dependsOn": ["^build"]
     }
   }
