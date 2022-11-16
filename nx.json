@@ -24,7 +24,8 @@
         "noTestFiles",
         "^noTestFiles",
         "{projectRoot}/**/*ts",
-        "{projectRoot}/**/*tsx"
+        "{projectRoot}/**/*tsx",
+        "{projectRoot}/**/tsconfig.json"
       ],
       "dependsOn": ["^build"]
     },
