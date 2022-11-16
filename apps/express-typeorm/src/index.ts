@@ -4,6 +4,7 @@ import { connect } from "mongo-session";
 
 const main = async () => {
   const app = express();
+  app.use(express.json());
   app.get("/", (_, res) => res.json({ hello: "world" }));
   await AppDataSource.initialize();
   await connect();
