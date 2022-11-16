@@ -2,8 +2,5 @@
     "compilerOptions": {
         "moduleResolution": "node",
         "strict": true,
-        "emitDeclarationOnly": true,
-        "declaration": true,
-        "outDir": "./dist",
     }
 }
