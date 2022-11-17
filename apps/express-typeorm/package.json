@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "argon2": "^0.30.2",
     "express": "^4.18.2",
     "mongo-session": "workspace:^0.0.1",
     "sqlite3": "^5.1.2",
