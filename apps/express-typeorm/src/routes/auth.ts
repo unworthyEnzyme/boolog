@@ -7,51 +7,34 @@ import argon2 from "argon2";
 const router = Router();
 
 router.post("/signup", async (req, res) => {
-  let username: string | undefined;
-  let password: string | undefined;
-  try {
-    const parsed = SignupRequestSchema.parse(req.body);
-    username = parsed.username;
-    password = parsed.password;
-  } catch (err) {
-    res.sendStatus(400);
-    return;
-  }
-  const hashedPassword = await argon2.hash(password, {
-    type: argon2.argon2id,
-    memoryCost: 2 ** 16,
-  });
-  const user = new User();
-  user.username = username;
-  user.password = hashedPassword;
-  try {
-    await user.save();
-    res.sendStatus(201);
-  } catch (err) {
-    res.sendStatus(400);
-  }
+  SignupRequestSchema.parseAsync(req.body)
+    .then(async (v) => {
+      const hashed = await argon2.hash(v.password, {
+        type: argon2.argon2id,
+        memoryCost: 2 ** 16,
+      });
+      return { username: v.username, password: hashed };
+    })
+    .then((v) => {
+      const user = new User();
+      user.username = v.username;
+      user.password = v.password;
+      return user;
+    })
+    .then((v) => v.save())
+    .then(() => res.sendStatus(201))
+    .catch((e) => res.sendStatus(400));
 });
 
 router.post("/login", async (req, res) => {
-  let username: string | undefined;
-  let password: string | undefined;
-  try {
-    const parsed = LoginRequestSchema.parse(req.body);
-    username = parsed.username;
-    password = parsed.password;
-  } catch (err) {
-    res.sendStatus(400);
-    return;
-  }
-  const user = await User.findOneBy({ username });
-  let verified: boolean;
-  try {
-    verified = await argon2.verify(user?.password ?? "$", password);
-  } catch (err) {
-    res.sendStatus(400);
-    return;
-  }
-  res.sendStatus(verified ? 200 : 400);
+  LoginRequestSchema.parseAsync(req.body)
+    .then(async (v) => {
+      const user = await User.findOneBy({ username: v.username });
+      return { user, reqPassword: v.password };
+    })
+    .then((v) => argon2.verify(v.user?.password ?? "$", v.reqPassword))
+    .then((v) => res.sendStatus(v ? 200 : 400))
+    .catch((e) => res.sendStatus(400));
 });
 
 export default router;
