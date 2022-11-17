@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { SignupRequestSchema } from "types-on-wire";
+import { SignupRequestSchema, LoginRequestSchema } from "types-on-wire";
 import { AuthSession } from "mongo-session";
 import { User } from "typeorm-entities";
 import argon2 from "argon2";
@@ -31,6 +31,27 @@ router.post("/signup", async (req, res) => {
     res.sendStatus(400);
   }
 });
-router.post("/login", async (req, res) => {});
+
+router.post("/login", async (req, res) => {
+  let username: string | undefined;
+  let password: string | undefined;
+  try {
+    const parsed = LoginRequestSchema.parse(req.body);
+    username = parsed.username;
+    password = parsed.password;
+  } catch (err) {
+    res.sendStatus(400);
+    return;
+  }
+  const user = await User.findOneBy({ username });
+  let verified: boolean;
+  try {
+    verified = await argon2.verify(user?.password ?? "$", password);
+  } catch (err) {
+    res.sendStatus(400);
+    return;
+  }
+  res.sendStatus(verified ? 200 : 400);
+});
 
 export default router;
