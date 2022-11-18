@@ -2,10 +2,12 @@ import express, { NextFunction, Request, Response } from "express";
 import { AppDataSource } from "./data-source";
 import { connect } from "mongo-session";
 import authRoute from "./routes/auth";
+import cookieParser from "cookie-parser";
 
 const main = async () => {
   const app = express();
   app.use(express.json());
+  app.use(cookieParser());
   app.use("/auth", authRoute);
   app.get("/", (_, res) => res.json({ hello: "world" }));
   await AppDataSource.initialize();

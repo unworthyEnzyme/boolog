@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { SignupRequestSchema, LoginRequestSchema } from "types-on-wire";
-import { createSession } from "mongo-session";
+import { createSession, getSessionById } from "mongo-session";
 import { User } from "typeorm-entities";
 import argon2 from "argon2";
 import DeferredPromise from "deferred-promise";
@@ -65,6 +65,17 @@ router.post("/login", async (req, res) => {
     })
     .then((v) => res.sendStatus(v ? 200 : 400))
     .catch((e) => res.sendStatus(400));
+});
+
+router.get("/me", (req, res) => {
+  const id = req.cookies.sessionId;
+  if (!id) return res.sendStatus(401);
+  getSessionById(id)
+    .then((v) => {
+      if (!v) return;
+      res.json({ username: v.username });
+    })
+    .catch(() => res.sendStatus(500));
 });
 
 export default router;
