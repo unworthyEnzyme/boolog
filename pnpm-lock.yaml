@@ -17,6 +17,7 @@ importers:
       argon2: ^0.30.2
       chokidar: ^3.5.3
       concurrently: ^7.5.0
+      deferred-promise: workspace:^1.0.0
       express: ^4.18.2
       mongo-session: workspace:^0.0.1
       nodemon: ^2.0.20
@@ -27,6 +28,7 @@ importers:
       typescript: ^4.8.4
     dependencies:
       argon2: 0.30.2
+      deferred-promise: link:../../packages/deferred-promise
       express: 4.18.2
       mongo-session: link:../../packages/mongo-session
       sqlite3: 5.1.2
@@ -54,25 +56,14 @@ importers:
   packages/mongo-session:
     specifiers:
       '@types/node': ^18.11.9
+      date-fns: ^2.29.3
       mongodb: ^4.11.0
       mongoose: ^6.7.2
       typescript: ^4.8.4
     dependencies:
+      date-fns: 2.29.3
       mongodb: 4.11.0
       mongoose: 6.7.2
-    devDependencies:
-      '@types/node': 18.11.9
-      typescript: 4.8.4
-
-  packages/red-papr:
-    specifiers:
-      '@types/node': ^18.11.9
-      mongodb: ^4.11.0
-      papr: ^9.2.1
-      typescript: ^4.8.4
-    dependencies:
-      mongodb: 4.11.0
-      papr: 9.2.1_mongodb@4.11.0
     devDependencies:
       '@types/node': 18.11.9
       typescript: 4.8.4
@@ -3046,15 +3037,6 @@ packages:
       aggregate-error: 3.1.0
     dev: false
     optional: true
-
-  /papr/9.2.1_mongodb@4.11.0:
-    resolution: {integrity: sha512-Re8bBmw5iS81Yyn+Oeov9H3KRWz5PTf91UVuRi1nax3QlDSvfmyG+Ge2qw+nZThoaOuQbgr21F0N9w7BQn0uHg==}
-    engines: {node: ^14.0.0 || >=15.0.0}
-    peerDependencies:
-      mongodb: '>=4.11.0'
-    dependencies:
-      mongodb: 4.11.0
-    dev: false
 
   /parse5-htmlparser2-tree-adapter/6.0.1:
     resolution: {integrity: sha512-qPuWvbLgvDGilKc5BoicRovlT4MtYT6JfJyBOMDsKoiT+GiuP5qyrPCnR9HcPECIJJmZh5jRndyNThnhhb/vlA==}
