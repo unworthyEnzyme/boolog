@@ -53,7 +53,7 @@ router.post("/login", async (req, res) => {
       return verified;
     })
     .then(async (v) => {
-      const session = await createSession((await username) as string).catch();
+      const session = await createSession(await username).catch();
       if (!session) return v;
       res.set(
         "Set-Cookie",
