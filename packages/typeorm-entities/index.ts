@@ -74,6 +74,7 @@ export class Blog extends BaseEntity {
 
 @Entity()
 @Unique(["owner", "associatedBlog", "associatedComment"])
+@Check("(associatedBlog IS NOT NULL) OR (associatedComment IS NOT NULL)")
 export class Like extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -93,6 +94,7 @@ export class Like extends BaseEntity {
 
 @Entity()
 @Unique(["owner", "associatedBlog", "associatedComment"])
+@Check("(associatedBlog IS NOT NULL) OR (associatedComment IS NOT NULL)")
 export class Dislike extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
