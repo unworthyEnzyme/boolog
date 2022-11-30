@@ -70,7 +70,7 @@ export class Blog extends BaseEntity {
 
 @Entity()
 @Unique(["owner", "associatedBlog", "associatedComment"])
-export class Like {
+export class Like extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -86,7 +86,7 @@ export class Like {
 
 @Entity()
 @Unique(["owner", "associatedBlog", "associatedComment"])
-export class Dislike {
+export class Dislike extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -103,7 +103,7 @@ export class Dislike {
 }
 
 @Entity()
-export class Comment {
+export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -125,4 +125,14 @@ export class Comment {
     onDelete: "CASCADE",
   })
   dislikes: Dislike[];
+
+  @ManyToOne(() => Comment, (comment) => comment.comments, {
+    onDelete: "CASCADE",
+  })
+  associatedComment: Comment;
+
+  @OneToMany(() => Comment, (comment) => comment.associatedComment, {
+    onDelete: "CASCADE",
+  })
+  comments: Comment[];
 }
