@@ -1,4 +1,11 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 
 @Entity()
 export class User extends BaseEntity {
@@ -10,4 +17,21 @@ export class User extends BaseEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Blog, (blog) => blog.author, {
+    onDelete: "CASCADE",
+  })
+  blogs: Blog[];
+}
+
+@Entity()
+export class Blog extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  content: string;
+
+  @ManyToOne(() => User, (user) => user.blogs, { onDelete: "CASCADE" })
+  author: User;
 }
