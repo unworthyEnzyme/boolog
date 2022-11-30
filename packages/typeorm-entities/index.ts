@@ -33,6 +33,11 @@ export class User extends BaseEntity {
     onDelete: "CASCADE",
   })
   dislikes: Dislike[];
+
+  @OneToMany(() => Comment, (comment) => comment.author, {
+    onDelete: "CASCADE",
+  })
+  comments: Comment[];
 }
 
 @Entity()
@@ -56,6 +61,11 @@ export class Blog extends BaseEntity {
     onDelete: "CASCADE",
   })
   dislikes: Dislike[];
+
+  @OneToMany(() => Comment, (comment) => comment.associatedBlog, {
+    onDelete: "CASCADE",
+  })
+  comments: Comment[];
 }
 
 @Entity()
@@ -81,5 +91,20 @@ export class Dislike {
   owner: User;
 
   @ManyToOne(() => Blog, (blog) => blog.dislikes, { onDelete: "CASCADE" })
+  associatedBlog: Blog;
+}
+
+@Entity()
+export class Comment {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  content: string;
+
+  @ManyToOne(() => User, (author) => author.comments, { onDelete: "CASCADE" })
+  author: User;
+
+  @ManyToOne(() => Blog, (blog) => blog.comments, { onDelete: "CASCADE" })
   associatedBlog: Blog;
 }
