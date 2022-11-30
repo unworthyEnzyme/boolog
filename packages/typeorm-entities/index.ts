@@ -46,7 +46,7 @@ export class Blog extends BaseEntity {
   @ManyToOne(() => User, (user) => user.blogs, { onDelete: "CASCADE" })
   author: User;
 
-  @OneToMany(() => Like, (like) => like.owner, {
+  @OneToMany(() => Like, (like) => like.associatedBlog, {
     cascade: true,
     onDelete: "CASCADE",
   })
