@@ -1,5 +1,6 @@
 import {
   BaseEntity,
+  Check,
   Column,
   Entity,
   ManyToOne,
@@ -103,6 +104,7 @@ export class Dislike extends BaseEntity {
 }
 
 @Entity()
+@Check("(associatedBlog IS NOT NULL) OR (associatedComment IS NOT NULL)")
 export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
