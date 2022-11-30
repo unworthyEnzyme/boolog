@@ -14,10 +14,10 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
+  @Column({ unique: true, nullable: false })
   username: string;
 
-  @Column()
+  @Column({ nullable: false })
   password: string;
 
   @OneToMany(() => Blog, (blog) => blog.author, {
@@ -49,7 +49,10 @@ export class Blog extends BaseEntity {
   @Column()
   content: string;
 
-  @ManyToOne(() => User, (user) => user.blogs, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.blogs, {
+    onDelete: "CASCADE",
+    nullable: false,
+  })
   author: User;
 
   @OneToMany(() => Like, (like) => like.associatedBlog, {
@@ -75,7 +78,10 @@ export class Like extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (owner) => owner.likes, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (owner) => owner.likes, {
+    onDelete: "CASCADE",
+    nullable: false,
+  })
   owner: User;
 
   @ManyToOne(() => Blog, (blog) => blog.likes, { onDelete: "CASCADE" })
@@ -91,7 +97,10 @@ export class Dislike extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (owner) => owner.dislikes, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (owner) => owner.dislikes, {
+    onDelete: "CASCADE",
+    nullable: false,
+  })
   owner: User;
 
   @ManyToOne(() => Blog, (blog) => blog.dislikes, { onDelete: "CASCADE" })
@@ -109,10 +118,13 @@ export class Comment extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: false })
   content: string;
 
-  @ManyToOne(() => User, (author) => author.comments, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (author) => author.comments, {
+    onDelete: "CASCADE",
+    nullable: false,
+  })
   author: User;
 
   @ManyToOne(() => Blog, (blog) => blog.comments, { onDelete: "CASCADE" })
