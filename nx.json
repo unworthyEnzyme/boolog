@@ -23,8 +23,8 @@
         "^noMarkdown",
         "noTestFiles",
         "^noTestFiles",
-        "{projectRoot}/**/*ts",
-        "{projectRoot}/**/*tsx",
+        "{projectRoot}/**/*.ts",
+        "{projectRoot}/**/*.tsx",
         "{projectRoot}/**/tsconfig.json"
       ],
       "dependsOn": ["^build"]
