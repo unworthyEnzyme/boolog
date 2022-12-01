@@ -73,6 +73,45 @@ export class Blog extends BaseEntity {
 }
 
 @Entity()
+@Check("(associatedBlog IS NOT NULL) OR (associatedComment IS NOT NULL)")
+export class Comment extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ nullable: false })
+  content: string;
+
+  @ManyToOne(() => User, (author) => author.comments, {
+    onDelete: "CASCADE",
+    nullable: false,
+  })
+  author: User;
+
+  @ManyToOne(() => Blog, (blog) => blog.comments, { onDelete: "CASCADE" })
+  associatedBlog: Blog;
+
+  @OneToMany(() => Like, (like) => like.associatedComment, {
+    onDelete: "CASCADE",
+  })
+  likes: Like[];
+
+  @OneToMany(() => Dislike, (dislike) => dislike.associatedComment, {
+    onDelete: "CASCADE",
+  })
+  dislikes: Dislike[];
+
+  @ManyToOne(() => Comment, (comment) => comment.comments, {
+    onDelete: "CASCADE",
+  })
+  associatedComment: Comment;
+
+  @OneToMany(() => Comment, (comment) => comment.associatedComment, {
+    onDelete: "CASCADE",
+  })
+  comments: Comment[];
+}
+
+@Entity()
 @Unique(["owner", "associatedBlog", "associatedComment"])
 @Check("(associatedBlog IS NOT NULL) OR (associatedComment IS NOT NULL)")
 export class Like extends BaseEntity {
@@ -112,43 +151,4 @@ export class Dislike extends BaseEntity {
     onDelete: "CASCADE",
   })
   associatedComment: Comment;
-}
-
-@Entity()
-@Check("(associatedBlog IS NOT NULL) OR (associatedComment IS NOT NULL)")
-export class Comment extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ nullable: false })
-  content: string;
-
-  @ManyToOne(() => User, (author) => author.comments, {
-    onDelete: "CASCADE",
-    nullable: false,
-  })
-  author: User;
-
-  @ManyToOne(() => Blog, (blog) => blog.comments, { onDelete: "CASCADE" })
-  associatedBlog: Blog;
-
-  @OneToMany(() => Like, (like) => like.associatedComment, {
-    onDelete: "CASCADE",
-  })
-  likes: Like[];
-
-  @OneToMany(() => Dislike, (dislike) => dislike.associatedComment, {
-    onDelete: "CASCADE",
-  })
-  dislikes: Dislike[];
-
-  @ManyToOne(() => Comment, (comment) => comment.comments, {
-    onDelete: "CASCADE",
-  })
-  associatedComment: Comment;
-
-  @OneToMany(() => Comment, (comment) => comment.associatedComment, {
-    onDelete: "CASCADE",
-  })
-  comments: Comment[];
 }
