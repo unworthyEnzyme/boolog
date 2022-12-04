@@ -6,7 +6,11 @@ import { authenticated } from "../middlewares";
 const router = Router();
 
 router.get("/:id", (req, res) => {
-  Blog.findOneBy({ id: +req.params.id })
+  Blog.findOne({
+    select: { id: true, content: true, author: { id: true, username: true } },
+    relations: { author: true },
+    where: { id: +req.params.id },
+  })
     .then((v) => (v === null ? res.sendStatus(404) : res.json(v)))
     .catch((e) => {
       console.error(e);
@@ -15,7 +19,10 @@ router.get("/:id", (req, res) => {
 });
 
 router.get("/", (req, res) => {
-  Blog.find()
+  Blog.find({
+    select: { id: true, content: true, author: { id: true, username: true } },
+    relations: { author: true },
+  })
     .then((v) => res.json(v))
     .catch((e) => {
       console.error(e);
