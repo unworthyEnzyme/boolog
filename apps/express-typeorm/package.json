@@ -20,7 +20,7 @@
     "sqlite3": "^5.1.2",
     "typeorm": "^0.3.10",
     "typeorm-entities": "workspace:^0.0.1",
-    "types-on-wire": "workspace:^1.0.0"
+    "types-on-wire": "workspace:^1.1.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.57",
