@@ -51,4 +51,24 @@ router.post("/", authenticated, (req, res) => {
     });
 });
 
+router.delete("/:id", authenticated, (req, res) => {
+  //@ts-ignore
+  const user = req.user as User;
+  Blog.findOne({
+    where: { id: +req.params.id, author: { id: user.id } },
+    relations: { author: true },
+  })
+    .then((blog) => {
+      if (!blog) throw new Error("Blog doesn't exists");
+      return blog.remove();
+    })
+    .then((blog) => {
+      res.sendStatus(200);
+    })
+    .catch((e: Error) => {
+      if (e.message === "Blog doesn't exists") return res.sendStatus(401);
+      res.sendStatus(500);
+    });
+});
+
 export default router;
