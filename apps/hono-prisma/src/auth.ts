@@ -2,6 +2,8 @@ import { Hono } from "hono";
 import { validator } from "hono/validator";
 import { client } from "./prisma";
 import argon2 from "argon2";
+import { add } from "date-fns";
+import { sessionStore } from "./session";
 
 export const authRouter = new Hono();
 
@@ -28,7 +30,17 @@ authRouter.post(
     const saved = await client.user.create({
       data: { username: body.username, password: body.password },
     });
-    return c.json({ id: saved.id });
+    //create and send a session id
+    const expires = add(new Date(), { days: 7 });
+    const id = await sessionStore.set(saved.username, expires);
+    c.cookie("sessionId", id, {
+      httpOnly: true,
+      secure: true,
+      path: "/",
+      expires,
+    });
+
+    return c.json({ id: saved.id }, 201);
   }
 );
 
@@ -53,10 +65,24 @@ authRouter.post(
     });
     const verified = await argon2.verify(user?.password!, body.password);
     if (!verified) throw new Error("Incorrect Credentials");
+    //create and send a session id
+    const expires = add(new Date(), { days: 7 });
+    const id = await sessionStore.set(user!.username, expires);
+    c.cookie("sessionId", id, {
+      httpOnly: true,
+      secure: true,
+      path: "/",
+      expires,
+    });
     return c.json({});
   }
 );
 
 authRouter.get("/me", async (c) => {
-  return c.text("hello");
+  const sessionId = c.req.cookie().sessionId;
+  if (!sessionId) return c.json({}, 401);
+  const session = await sessionStore.get(sessionId);
+  console.log(session);
+  if (!session) return c.json({}, 401);
+  return c.json(session, 200);
 });
