@@ -18,7 +18,7 @@ importers:
       chokidar: ^3.5.3
       concurrently: ^7.6.0
       date-fns: ^2.29.3
-      hono: ^2.5.9
+      hono: ^2.5.10
       nodemon: ^2.0.20
       prisma: ^4.7.1
       redis: ^4.5.1
@@ -29,7 +29,7 @@ importers:
       '@swc/core': 1.3.21
       argon2: 0.30.2
       date-fns: 2.29.3
-      hono: 2.5.9
+      hono: 2.5.10
       redis: 4.5.1
     devDependencies:
       chokidar: 3.5.3
@@ -3444,8 +3444,8 @@ packages:
     resolution: {integrity: sha512-tzcUFauisWKNHaRkN4Wjl/ZA07gENAjFl3J/c480dprkGTg5EQstgaNFqBfUqCq54kZRIEcreTsAgF/m2quD7A==}
     dev: false
 
-  /hono/2.5.9:
-    resolution: {integrity: sha512-eqIcjr6DGNgtHA3Dve8LTneXOUx/9nOZW3QJE5sw0vLL83BNtf5rqbYaGYdFrhinGeJXcKc6Mf9Rslnq4hcS0g==}
+  /hono/2.5.10:
+    resolution: {integrity: sha512-+1/LYLzvgRxCFB+b1mJtjRhP4f6rL+QYN3Br8fvoLlixulAcsmQCmeErGY/mj8fwIZXHT0eZwITgaOzTIQK1TQ==}
     engines: {node: '>=16.0.0'}
     dev: false
 
