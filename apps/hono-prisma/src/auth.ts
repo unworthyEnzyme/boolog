@@ -82,7 +82,6 @@ authRouter.get("/me", async (c) => {
   const sessionId = c.req.cookie().sessionId;
   if (!sessionId) return c.json({}, 401);
   const session = await sessionStore.get(sessionId);
-  console.log(session);
   if (!session) return c.json({}, 401);
   return c.json(session, 200);
 });
