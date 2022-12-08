@@ -4,10 +4,12 @@ import { logger } from "hono/logger";
 import { authRouter } from "./auth";
 import { client as redisClient } from "./redis";
 import { client as prismaClient } from "./prisma";
+import { authenticated } from "./session";
 
 const app = new Hono();
 
 app.use("*", logger());
+app.use("*", authenticated);
 app.get("/api", (c) => c.text("Hono meets Node.js"));
 app.route("/api/auth", authRouter);
 
