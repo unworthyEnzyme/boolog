@@ -98,3 +98,59 @@ blogRouter.get(
     return c.json(comments);
   }
 );
+
+blogRouter.post("/:id/like", async (c) => {
+  const username = c.req.headers.get("x-username")!;
+  const user = await client.user.findUnique({ where: { username } });
+  if (!user) return c.body(null, 401);
+  await safe(async () => {
+    await client.dislike.delete({
+      where: { userId_blogId: { userId: user.id, blogId: +c.req.param("id") } },
+    });
+  });
+  await client.like.create({
+    data: { blogId: +c.req.param("id"), userId: user.id },
+  });
+  return c.body(null, 201);
+});
+
+blogRouter.delete("/:id/un-like", async (c) => {
+  const username = c.req.headers.get("x-username")!;
+  const user = await client.user.findUnique({ where: { username } });
+  if (!user) return c.body(null, 401);
+  const like = await client.like.delete({
+    where: { userId_blogId: { userId: user.id, blogId: +c.req.param("id") } },
+  });
+  return c.json({ id: like.id });
+});
+
+blogRouter.post("/:id/dislike", async (c) => {
+  const username = c.req.headers.get("x-username")!;
+  const user = await client.user.findUnique({ where: { username } });
+  if (!user) return c.body(null, 401);
+  await safe(async () => {
+    await client.like.delete({
+      where: { userId_blogId: { userId: user.id, blogId: +c.req.param("id") } },
+    });
+  });
+  await client.dislike.create({
+    data: { blogId: +c.req.param("id"), userId: user.id },
+  });
+  return c.body(null, 201);
+});
+
+blogRouter.delete("/:id/un-dislike", async (c) => {
+  const username = c.req.headers.get("x-username")!;
+  const user = await client.user.findUnique({ where: { username } });
+  if (!user) return c.body(null, 401);
+  const dislike = await client.dislike.delete({
+    where: { userId_blogId: { userId: user.id, blogId: +c.req.param("id") } },
+  });
+  return c.json({ id: dislike.id });
+});
+
+async function safe(callback: () => void | Promise<void>) {
+  try {
+    await callback();
+  } catch (_) {}
+}
