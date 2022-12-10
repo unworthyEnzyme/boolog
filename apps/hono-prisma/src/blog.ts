@@ -4,17 +4,36 @@ import { validator } from "hono/validator";
 
 export const blogRouter = new Hono();
 
-blogRouter.get("/", async (c) => {
-  const blogs = await client.blog.findMany({
-    select: {
-      id: true,
-      title: true,
-      author: { select: { username: true } },
-      _count: { select: { comments: true, likes: true, dislikes: true } },
-    },
-  });
-  return c.json(blogs);
-});
+blogRouter.get(
+  "/",
+  validator((v) => ({
+    skip: v
+      .query("skip")
+      .isNumeric()
+      .isRequired()
+      .message("take argument is required"),
+    take: v
+      .query("take")
+      .isNumeric()
+      .isRequired()
+      .message("take argument is required"),
+  })),
+  async (c) => {
+    const { skip, take } = c.req.valid();
+    const blogs = await client.blog.findMany({
+      //TODO: use cursor based pagination
+      take: +take,
+      skip: +skip,
+      select: {
+        id: true,
+        title: true,
+        author: { select: { username: true } },
+        _count: { select: { comments: true, likes: true, dislikes: true } },
+      },
+    });
+    return c.json(blogs);
+  }
+);
 
 blogRouter.get("/:id", async (c) => {
   const blog = await client.blog.findUnique({
@@ -62,10 +81,28 @@ blogRouter.delete("/:id", async (c) => {
   return c.json({ id: blog.id });
 });
 
-blogRouter.get("/:id/comments", async (c) => {
-  const comments = await client.comment.findMany({
-    where: { blogId: +c.req.param("id") },
-    select: { id: true, content: true, user: { select: { username: true } } },
-  });
-  return c.json(comments);
-});
+blogRouter.get(
+  "/:id/comments",
+  validator((v) => ({
+    skip: v
+      .query("skip")
+      .isNumeric()
+      .isRequired()
+      .message("take argument is required"),
+    take: v
+      .query("take")
+      .isNumeric()
+      .isRequired()
+      .message("take argument is required"),
+  })),
+  async (c) => {
+    const { skip, take } = c.req.valid();
+    const comments = await client.comment.findMany({
+      skip: +skip,
+      take: +take,
+      where: { blogId: +c.req.param("id") },
+      select: { id: true, content: true, user: { select: { username: true } } },
+    });
+    return c.json(comments);
+  }
+);
