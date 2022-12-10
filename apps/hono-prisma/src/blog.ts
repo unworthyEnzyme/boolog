@@ -6,7 +6,12 @@ export const blogRouter = new Hono();
 
 blogRouter.get("/", async (c) => {
   const blogs = await client.blog.findMany({
-    select: { id: true, title: true, author: { select: { username: true } } },
+    select: {
+      id: true,
+      title: true,
+      author: { select: { username: true } },
+      _count: { select: { comments: true, likes: true, dislikes: true } },
+    },
   });
   return c.json(blogs);
 });
@@ -19,6 +24,7 @@ blogRouter.get("/:id", async (c) => {
       title: true,
       content: true,
       author: { select: { username: true } },
+      _count: { select: { comments: true, likes: true, dislikes: true } },
     },
   });
   if (!blog) return c.body(null, 404);
