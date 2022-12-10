@@ -49,9 +49,10 @@ model Dislike {
 }
 
 model Comment {
-  id     Int  @id @default(autoincrement())
-  blogId Int
-  blog   Blog @relation(fields: [blogId], references: [id])
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  id      Int    @id @default(autoincrement())
+  blogId  Int
+  blog    Blog   @relation(fields: [blogId], references: [id])
+  userId  Int
+  user    User   @relation(fields: [userId], references: [id])
+  content String
 }
