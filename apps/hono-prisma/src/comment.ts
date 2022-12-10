@@ -23,7 +23,7 @@ commentRouter.post(
     content: v.json("content").isRequired().message("content is required"),
     blogId: v
       .json("blogId")
-      .isNumeric()
+      .asNumber()
       .isRequired()
       .message("`blogId` is required"),
   })),
@@ -33,7 +33,7 @@ commentRouter.post(
     if (!user) return c.body(null, 401);
     const body = c.req.valid();
     const comment = await client.comment.create({
-      data: { content: body.content, userId: user.id, blogId: +body.blogId },
+      data: { content: body.content, userId: user.id, blogId: body.blogId },
     });
     return c.json({ id: comment.id }, 201);
   }
