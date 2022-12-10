@@ -7,11 +7,7 @@ export const blogRouter = new Hono();
 blogRouter.get(
   "/",
   validator((v) => ({
-    skip: v
-      .query("skip")
-      .isNumeric()
-      .isRequired()
-      .message("take argument is required"),
+    skip: v.query("skip").isNumeric().isOptional(),
     take: v
       .query("take")
       .isNumeric()
@@ -23,7 +19,7 @@ blogRouter.get(
     const blogs = await client.blog.findMany({
       //TODO: use cursor based pagination
       take: +take,
-      skip: +skip,
+      skip: +skip || 0,
       select: {
         id: true,
         title: true,
@@ -84,11 +80,7 @@ blogRouter.delete("/:id", async (c) => {
 blogRouter.get(
   "/:id/comments",
   validator((v) => ({
-    skip: v
-      .query("skip")
-      .isNumeric()
-      .isRequired()
-      .message("take argument is required"),
+    skip: v.query("skip").isNumeric().isOptional(),
     take: v
       .query("take")
       .isNumeric()
@@ -98,7 +90,7 @@ blogRouter.get(
   async (c) => {
     const { skip, take } = c.req.valid();
     const comments = await client.comment.findMany({
-      skip: +skip,
+      skip: +skip || 0,
       take: +take,
       where: { blogId: +c.req.param("id") },
       select: { id: true, content: true, user: { select: { username: true } } },
