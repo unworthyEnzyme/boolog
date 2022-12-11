@@ -1,11 +1,11 @@
 import { SWRConfig } from "swr";
+import { RouterProvider } from "react-router-dom";
+import { router } from "./router";
 
 function App() {
   return (
     <SWRConfig value={{ suspense: true }}>
-      <div className="text-red-400 bg-slate-300 w-12 rounded-lg">
-        hello world
-      </div>
+      <RouterProvider router={router} />
     </SWRConfig>
   );
 }
