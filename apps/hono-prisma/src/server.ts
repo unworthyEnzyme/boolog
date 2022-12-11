@@ -7,13 +7,15 @@ import { client as prismaClient } from "./prisma";
 import { authenticated } from "./session";
 import { blogRouter } from "./blog";
 import { commentRouter } from "./comment";
+import { cors } from "hono/cors";
 
 const app = new Hono();
 
+app.use("*", cors());
 app.use("*", logger());
+app.get("/api", (c) => c.json({ hello: "world" }));
 app.route("/api/auth", authRouter);
 app.use("*", authenticated);
-app.get("/api", (c) => c.text("Hono meets Node.js"));
 app.route("/api/blogs", blogRouter);
 app.route("/api/comments", commentRouter);
 
