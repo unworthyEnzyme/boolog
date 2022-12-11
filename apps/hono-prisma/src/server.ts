@@ -11,7 +11,14 @@ import { cors } from "hono/cors";
 
 const app = new Hono();
 
-app.use("*", cors());
+app.use(
+  "*",
+  cors({
+    origin: "http://localhost:5173",
+    allowMethods: ["get", "post", "put", "delete", "patch"],
+    credentials: true,
+  })
+);
 app.use("*", logger());
 app.get("/api", (c) => c.json({ hello: "world" }));
 app.route("/api/auth", authRouter);
