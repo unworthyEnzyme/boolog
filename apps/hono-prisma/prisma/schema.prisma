@@ -18,14 +18,15 @@ model User {
 }
 
 model Blog {
-  id       Int       @id @default(autoincrement())
-  title    String
-  content  String
-  authorId Int
-  author   User      @relation(fields: [authorId], references: [id])
-  likes    Like[]
-  dislikes Dislike[]
-  comments Comment[]
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  authorId  Int
+  author    User      @relation(fields: [authorId], references: [id])
+  likes     Like[]
+  dislikes  Dislike[]
+  comments  Comment[]
+  createdAt DateTime  @default(now())
 }
 
 model Like {
@@ -49,10 +50,11 @@ model Dislike {
 }
 
 model Comment {
-  id      Int    @id @default(autoincrement())
-  blogId  Int
-  blog    Blog   @relation(fields: [blogId], references: [id])
-  userId  Int
-  user    User   @relation(fields: [userId], references: [id])
-  content String
+  id        Int      @id @default(autoincrement())
+  blogId    Int
+  blog      Blog     @relation(fields: [blogId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
 }

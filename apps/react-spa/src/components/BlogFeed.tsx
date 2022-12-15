@@ -9,6 +9,7 @@ const fetcher = async (url: string) => {
 type Blog = {
   id: number;
   title: string;
+  createdAt: string;
   author: {
     username: string;
   };

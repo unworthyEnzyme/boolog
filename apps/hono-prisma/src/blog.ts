@@ -23,6 +23,7 @@ blogRouter.get(
       select: {
         id: true,
         title: true,
+        createdAt: true,
         author: { select: { username: true } },
         _count: { select: { comments: true, likes: true, dislikes: true } },
       },
@@ -38,6 +39,7 @@ blogRouter.get("/:id", async (c) => {
       id: true,
       title: true,
       content: true,
+      createdAt: true,
       author: { select: { username: true } },
       _count: { select: { comments: true, likes: true, dislikes: true } },
     },
@@ -93,7 +95,12 @@ blogRouter.get(
       skip: +skip || 0,
       take: +take,
       where: { blogId: +c.req.param("id") },
-      select: { id: true, content: true, user: { select: { username: true } } },
+      select: {
+        id: true,
+        content: true,
+        user: { select: { username: true } },
+        createdAt: true,
+      },
     });
     return c.json(comments);
   }
