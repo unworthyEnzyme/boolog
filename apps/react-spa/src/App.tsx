@@ -1,11 +1,14 @@
 import { SWRConfig } from "swr";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./router";
+import { Suspense } from "react";
 
 function App() {
   return (
     <SWRConfig value={{ suspense: true }}>
-      <RouterProvider router={router} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
     </SWRConfig>
   );
 }
