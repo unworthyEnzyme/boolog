@@ -21,8 +21,8 @@ export function Signup() {
       method: "POST",
       body: JSON.stringify(data),
     });
-    if (res.ok) return navigate("/", { replace: true, relative: "route" });
-    console.log("an error occurred");
+    await res.json();
+    if (res.ok) navigate("/", { replace: true, relative: "route" });
   };
 
   return (

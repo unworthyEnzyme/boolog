@@ -21,7 +21,8 @@ export function Login() {
       method: "POST",
       body: JSON.stringify(data),
     });
-    if (res.ok) return navigate("/", { replace: true, relative: "route" });
+    await res.json();
+    if (res.ok) navigate("/", { replace: true, relative: "route" });
   };
 
   return (
