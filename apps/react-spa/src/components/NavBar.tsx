@@ -1,5 +1,6 @@
 import { SiVercel } from "react-icons/si";
 import { NavLink } from "react-router-dom";
+import * as Avatar from "@radix-ui/react-avatar";
 
 export function Navbar() {
   return (
@@ -7,7 +8,7 @@ export function Navbar() {
       <NavLink to="/" relative="route">
         <SiVercel size={32} className="text-slate-100" />
       </NavLink>
-      <div className="flex gap-4 items-center">
+      {/* <div className="flex gap-4 items-center">
         <NavLink
           to="/login"
           relative="route"
@@ -22,7 +23,12 @@ export function Navbar() {
         >
           Signup
         </NavLink>
-      </div>
+      </div> */}
+      <Avatar.Root className="rounded-full bg-sky-400 text-slate-100 w-8 aspect-square flex justify-center items-center">
+        <Avatar.Fallback>
+          <span>M</span>
+        </Avatar.Fallback>
+      </Avatar.Root>
     </nav>
   );
 }
