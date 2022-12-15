@@ -1,4 +1,5 @@
 import useSwr from "swr";
+import { BlogFeedItem } from "./BlogFeedItem";
 
 const fetcher = async (url: string) => {
   const res = await fetch(url, { credentials: "include" });
@@ -21,12 +22,9 @@ type Blog = {
 export function BlogFeed() {
   const { data } = useSwr<Blog[]>("/api/blogs?take=100", fetcher);
   return (
-    <ul>
+    <ul className="flex flex-col items-center gap-2 p-2 divide-y">
       {data?.map((blog) => (
-        <li key={blog.id} className="bg-slate-100 m-1">
-          <div>{blog.title}</div>
-          <div>{blog.author.username}</div>
-        </li>
+        <BlogFeedItem key={blog.id} blog={blog} />
       ))}
     </ul>
   );
