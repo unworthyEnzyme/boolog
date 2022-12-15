@@ -4,6 +4,7 @@ import { Protected } from "./components/Protected";
 import { Signup } from "./components/Signup";
 import { HomePage } from "./components/HomePage";
 import { ErrorBoundary } from "react-error-boundary";
+import { Navbar } from "./components/NavBar";
 
 export const router = createBrowserRouter([
   {
@@ -18,7 +19,10 @@ export const router = createBrowserRouter([
         }}
       >
         <Protected>
-          <HomePage />
+          <div>
+            <Navbar />
+            <HomePage />
+          </div>
         </Protected>
       </ErrorBoundary>
     ),
